@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.RequestScope;
 
+import com.contaazul.bankslip.dto.Payment;
 import com.contaazul.bankslip.model.Bankslip;
 import com.contaazul.bankslip.service.BankslipService;
 
@@ -26,31 +27,31 @@ public class BankslipRestService {
 
 	@Autowired
 	private BankslipService service;
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Bankslip save(@Valid @RequestBody Bankslip bankslip) {
 		return service.save(bankslip);
 	}
-	
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public Iterable<Bankslip> findAll() {
 		return service.findAll();
 	}
-	
+
 	@GetMapping("{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public Bankslip findById(@PathVariable UUID id) {
-		return service.findById(id);
+		return service.find(id);
 	}
-	
+
 	@PostMapping("{id}/payments")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void pay(@PathVariable UUID id) {
-		service.pay(id);
+	public void pay(@PathVariable UUID id, @RequestBody Payment payment) {
+		service.pay(id, payment);
 	}
-	
+
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void cancel(@PathVariable UUID id) {

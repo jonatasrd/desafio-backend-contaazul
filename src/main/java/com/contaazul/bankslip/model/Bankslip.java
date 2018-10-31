@@ -11,7 +11,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import com.contaazul.bankslip.dto.Payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -30,15 +33,23 @@ public class Bankslip {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
+	@NotNull
 	@JsonProperty("due_date")
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name="due_date")
 	private LocalDate dueDate;
 	
+	@JsonProperty("payment_date")
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@Column(name="payment_date")
+	private LocalDate paymentDate;
+	
+	@NotNull
 	@JsonProperty("total_in_cents")
 	@Column(name="total_in_cents")
 	private BigDecimal totalInCents;
 	
+	@NotBlank
 	@Column(name="custumer")
 	private String customer;
 	
@@ -48,6 +59,17 @@ public class Bankslip {
 	
 	@Column(name="fine")
 	private BigDecimal fine;
+
+	public Bankslip pay(Payment payment) {
+		this.setPaymentDate(payment.getPaymentDate());
+		this.setStatus(Status.PAID);
+		return this;
+	}
+
+	public Bankslip cancel() {
+		this.setStatus(Status.CANCELED);
+		return this;
+	}
 	
 	
 	

@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.contaazul.bankslip.exception.ResourceAlreadyExists;
 import com.contaazul.bankslip.exception.ResourceNotFoundException;
+import com.contaazul.bankslip.exception.model.MessageError;
 import com.contaazul.bankslip.exception.model.ResponseError;
 
 import lombok.extern.slf4j.Slf4j;
@@ -81,9 +83,9 @@ class GlobalExceptionHandler {
 		log.debug(ERROR + ex);
 
 		ResponseError error = ResponseError.builder()
-								.status(BAD_REQUEST.value())
-								.error(BAD_REQUEST.name())
-								.msg(ex.getMessage())
+								.status(UNPROCESSABLE_ENTITY.value())
+								.error(UNPROCESSABLE_ENTITY.name())
+								.msg(MessageError.UNPROCESSABLE_ENTITY.getMsg())
 								.timestamp(LocalDateTime.now())
 								.build();
 
