@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.RequestScope;
 
 import com.contaazul.bankslip.model.Bankslip;
-import com.contaazul.bankslip.service.BankslipServiceImpl;
+import com.contaazul.bankslip.service.BankslipService;
 
 @RestController
 @RequestMapping("/bankslips")
@@ -25,7 +25,7 @@ import com.contaazul.bankslip.service.BankslipServiceImpl;
 public class BankslipRestService {
 
 	@Autowired
-	private BankslipServiceImpl service;
+	private BankslipService service;
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

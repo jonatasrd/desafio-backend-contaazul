@@ -3,14 +3,21 @@ package com.contaazul.bankslip.service;
 import java.util.List;
 import java.util.UUID;
 
-import com.contaazul.bankslip.model.Bankslip;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.contaazul.bankslip.model.Bankslip;
+import com.contaazul.bankslip.repository.BankslipRepository;
+
+@Service
 public class BankslipServiceImpl implements BankslipService {
+	
+	@Autowired
+	BankslipRepository repository;
 
 	@Override
 	public Bankslip save(Bankslip bankslip) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(bankslip);
 	}
 
 	@Override
@@ -21,8 +28,7 @@ public class BankslipServiceImpl implements BankslipService {
 
 	@Override
 	public List<Bankslip> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
 	}
 
 	@Override
