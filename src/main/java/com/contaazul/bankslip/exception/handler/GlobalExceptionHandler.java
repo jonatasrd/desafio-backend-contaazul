@@ -89,7 +89,7 @@ class GlobalExceptionHandler {
 								.timestamp(LocalDateTime.now())
 								.build();
 
-		return new ResponseEntity<>(error, BAD_REQUEST);
+		return new ResponseEntity<>(error, UNPROCESSABLE_ENTITY);
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)

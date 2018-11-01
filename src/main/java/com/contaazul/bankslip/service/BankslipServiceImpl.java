@@ -1,6 +1,7 @@
 package com.contaazul.bankslip.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +19,12 @@ public class BankslipServiceImpl implements BankslipService {
 	@Autowired
 	BankslipRepository repository;
 
+	private FineCalculatorService fineCalculator;
+	
 	@Autowired
-	private FineCalculator fineCalculator;
+	BankslipServiceImpl(FineCalculatorService fineCalculator) {
+		this.fineCalculator = fineCalculator;
+	}
 
 	@Override
 	public Bankslip save(Bankslip bankslip) {
@@ -29,8 +34,8 @@ public class BankslipServiceImpl implements BankslipService {
 	@Override
 	public Bankslip find(UUID id) {
 		Bankslip bankslip = findById(id);
-		BigDecimal fine = fineCalculator.calculate(bankslip.getTotalInCents(),
-				bankslip.getDueDate());
+		LocalDate today = LocalDate.now();
+		BigDecimal fine = fineCalculator.calculate(bankslip, today);
 		if (fine.intValue() > 0)
 			bankslip.setFine(fine);
 		return bankslip;
