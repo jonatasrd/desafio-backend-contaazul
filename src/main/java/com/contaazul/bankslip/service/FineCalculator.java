@@ -16,9 +16,9 @@ public class FineCalculator {
 
 	public BigDecimal calculate(BigDecimal totalInCents, LocalDate dueDate) {
 		long days = getNumberOfDays(dueDate);
-		
+
 		System.out.println(days);
-		
+
 		if (days == 0)
 			return new BigDecimal(0);
 
@@ -27,8 +27,7 @@ public class FineCalculator {
 		} else {
 			fine = FINE_0_10;
 		}
-		System.out.println(fine);
-		return fine.multiply(totalInCents);
+		return fine.multiply(totalInCents).multiply(new BigDecimal(days));
 	}
 
 	private long getNumberOfDays(LocalDate dueDate) {
