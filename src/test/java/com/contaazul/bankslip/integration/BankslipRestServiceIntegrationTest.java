@@ -234,6 +234,7 @@ public class BankslipRestServiceIntegrationTest {
     	
     	bankslips = repository.findAll();
     	assertThat(bankslips).extracting(Bankslip::getStatus).containsOnly(Status.PAID);
+    	assertThat(bankslips.get(0).getPaymentDate()).isEqualTo(payment.getPaymentDate());
     }
     
     @Test

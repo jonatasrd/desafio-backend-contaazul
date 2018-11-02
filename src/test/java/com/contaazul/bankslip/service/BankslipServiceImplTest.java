@@ -102,6 +102,7 @@ public class BankslipServiceImplTest {
 		Bankslip fromDb = service.pay(id, payment);
         assertThat(fromDb.getCustomer()).isEqualTo("Yahoo");
         assertThat(fromDb.getStatus().name()).isEqualTo("PAID");
+        assertThat(fromDb.getPaymentDate()).isEqualTo(payment.getPaymentDate());
         
         verifyFindByIdIsCalledOnce();
     }
