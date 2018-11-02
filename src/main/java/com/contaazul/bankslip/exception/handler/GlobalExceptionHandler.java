@@ -54,7 +54,7 @@ class GlobalExceptionHandler {
 		ResponseError error = ResponseError.builder()
 								.status(NOT_FOUND.value())
 								.error(NOT_FOUND.name())
-								.msg(ex.getMessage())
+								.msg(MessageError.RESOURCE_NOT_FOUND.getMsg())
 								.timestamp(LocalDateTime.now())
 								.build();
 

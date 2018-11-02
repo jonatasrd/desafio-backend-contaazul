@@ -11,7 +11,7 @@ public interface BankslipService {
 	Bankslip save(Bankslip bankslip);
 	Bankslip find(UUID id);
 	List<Bankslip> findAll();
-	void pay(UUID id, Payment payment);
-	void cancel(UUID id);
+	Bankslip pay(UUID id, Payment payment);
+	Bankslip cancel(UUID id);
 
 }

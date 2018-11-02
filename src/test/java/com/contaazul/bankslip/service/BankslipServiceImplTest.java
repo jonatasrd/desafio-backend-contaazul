@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.contaazul.bankslip.dto.Payment;
 import com.contaazul.bankslip.exception.ResourceNotFoundException;
 import com.contaazul.bankslip.model.Bankslip;
 import com.contaazul.bankslip.repository.BankslipRepository;
@@ -48,10 +49,12 @@ public class BankslipServiceImplTest {
 	private Bankslip bankslipYahoo;
 	private Bankslip bankslipGoogle;
 	private Bankslip bankslipOracle;
+	private Payment payment;
 
 	@Before
 	public void setUp() {
 		dueDate = LocalDate.of(2018, 10, 15);
+		payment = Payment.builder().paymentDate(LocalDate.of(2018, 10, 15)).build();
 		bankslipYahoo = Bankslip.builder().id(id).customer("Yahoo")
 				.dueDate(dueDate).totalInCents(new BigDecimal(1000)).build();
 		
@@ -94,7 +97,23 @@ public class BankslipServiceImplTest {
         verifyFindByIdIsCalledOnce();
     }
 	
-	//TODO implementar teste de pay and cancel 
+	@Test
+    public void whenPayBankslip_thenChangeStatus() {
+		Bankslip fromDb = service.pay(id, payment);
+        assertThat(fromDb.getCustomer()).isEqualTo("Yahoo");
+        assertThat(fromDb.getStatus().name()).isEqualTo("PAID");
+        
+        verifyFindByIdIsCalledOnce();
+    }
+	
+	@Test
+    public void whenDeleteBankslip_thenChangeStatus() {
+		Bankslip fromDb = service.cancel(id);
+        assertThat(fromDb.getCustomer()).isEqualTo("Yahoo");
+        assertThat(fromDb.getStatus().name()).isEqualTo("CANCELED");
+        
+        verifyFindByIdIsCalledOnce();
+    }
 	
 	private void verifySaveIsCalledOnce() {
 		Mockito.verify(repository, VerificationModeFactory.times(1)).save(Mockito.any());

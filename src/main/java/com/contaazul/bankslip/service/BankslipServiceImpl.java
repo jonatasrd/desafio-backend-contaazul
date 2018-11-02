@@ -47,17 +47,19 @@ public class BankslipServiceImpl implements BankslipService {
 	}
 
 	@Override
-	public void pay(UUID id, Payment payment) {
+	public Bankslip pay(UUID id, Payment payment) {
 		Bankslip bankslip = findById(id);
 		bankslip.pay(payment);
 		repository.saveAndFlush(bankslip);
+		return bankslip;
 	}
 
 	@Override
-	public void cancel(UUID id) {
+	public Bankslip cancel(UUID id) {
 		Bankslip bankslip = findById(id);
 		bankslip.cancel();
 		repository.saveAndFlush(bankslip);
+		return bankslip;
 	}
 
 	private Bankslip findById(UUID id) {
