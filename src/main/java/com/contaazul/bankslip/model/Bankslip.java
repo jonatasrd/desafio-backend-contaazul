@@ -68,12 +68,12 @@ public class Bankslip {
 
 	public Bankslip pay(Payment payment) {
 		this.setPaymentDate(payment.getPaymentDate());
-		this.setStatus(Status.PAID);
+		this.status.pay(this);
 		return this;
 	}
 
 	public Bankslip cancel() {
-		this.setStatus(Status.CANCELED);
+		this.status.cancel(this);
 		return this;
 	}
 	

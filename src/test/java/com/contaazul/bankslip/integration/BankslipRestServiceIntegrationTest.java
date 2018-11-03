@@ -216,26 +216,30 @@ public class BankslipRestServiceIntegrationTest {
     }
     
     @Test
-    public void whenPayBankslip_thenReturnPaid() throws Exception {
-    	
-    	Bankslip bankslipYahoo = Bankslip.builder().customer("Yahoo")
-				.dueDate(LocalDate.of(2018, 10, 15)).totalInCents(new BigDecimal("1000.00")).build();
-    	Payment payment = Payment.builder().paymentDate(LocalDate.of(2018, 10, 15)).build();
-    	
-    	repository.saveAndFlush(bankslipYahoo);
-    	
-    	List<Bankslip> bankslips = repository.findAll();
-    	Bankslip bankslipDb = bankslips.get(0);
-    	
-    	mvc.perform(post("/bankslips/" + bankslipDb.getId()+ "/payments")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.content(mapper.writeValueAsString(payment)))
-			.andExpect(status().isNoContent());
-    	
-    	bankslips = repository.findAll();
-    	assertThat(bankslips).extracting(Bankslip::getStatus).containsOnly(Status.PAID);
-    	assertThat(bankslips.get(0).getPaymentDate()).isEqualTo(payment.getPaymentDate());
-    }
+	public void whenPayBankslip_thenReturnPaid() throws Exception {
+
+		Bankslip bankslipYahoo = Bankslip.builder().customer("Yahoo")
+				.status(Status.PENDING).dueDate(LocalDate.of(2018, 10, 15))
+				.totalInCents(new BigDecimal("1000.00")).build();
+		Payment payment = Payment.builder()
+				.paymentDate(LocalDate.of(2018, 10, 15)).build();
+
+		repository.saveAndFlush(bankslipYahoo);
+
+		List<Bankslip> bankslips = repository.findAll();
+		Bankslip bankslipDb = bankslips.get(0);
+
+		mvc.perform(post("/bankslips/" + bankslipDb.getId() + "/payments")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(payment)))
+				.andExpect(status().isNoContent());
+
+		bankslips = repository.findAll();
+		assertThat(bankslips).extracting(Bankslip::getStatus)
+				.containsOnly(Status.PAID);
+		assertThat(bankslips.get(0).getPaymentDate())
+				.isEqualTo(payment.getPaymentDate());
+	}
     
     @Test
     public void whenPayBankslipWithWrongId_thenNotFound() throws Exception {
@@ -249,7 +253,7 @@ public class BankslipRestServiceIntegrationTest {
     @Test
     public void whenCancelBankslip_thenReturnCanceled() throws Exception {
     	
-    	Bankslip bankslipYahoo = Bankslip.builder().customer("Yahoo")
+    	Bankslip bankslipYahoo = Bankslip.builder().customer("Yahoo").status(Status.PENDING)
 				.dueDate(LocalDate.of(2018, 10, 15)).totalInCents(new BigDecimal("1000.00")).build();
     	
     	repository.saveAndFlush(bankslipYahoo);

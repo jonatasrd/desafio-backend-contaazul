@@ -18,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.contaazul.bankslip.exception.InvalidStatusException;
 import com.contaazul.bankslip.exception.ResourceAlreadyExists;
 import com.contaazul.bankslip.exception.ResourceNotFoundException;
 import com.contaazul.bankslip.exception.model.MessageError;
@@ -59,6 +60,20 @@ class GlobalExceptionHandler {
 								.build();
 
 		return new ResponseEntity<>(error, NOT_FOUND);
+	}
+	
+	@ExceptionHandler(InvalidStatusException.class)
+	public HttpEntity<ResponseError> handlerResourceNotFoundException(final InvalidStatusException ex) {
+		log.debug(ERROR + ex);
+
+		ResponseError error = ResponseError.builder()
+								.status(CONFLICT.value())
+								.error(CONFLICT.name())
+								.msg(ex.getMessage())
+								.timestamp(LocalDateTime.now())
+								.build();
+
+		return new ResponseEntity<>(error, CONFLICT);
 	}
 
 

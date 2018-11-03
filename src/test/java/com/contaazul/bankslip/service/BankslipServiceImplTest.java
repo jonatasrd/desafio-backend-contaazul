@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.contaazul.bankslip.dto.Payment;
 import com.contaazul.bankslip.exception.ResourceNotFoundException;
 import com.contaazul.bankslip.model.Bankslip;
+import com.contaazul.bankslip.model.Status;
 import com.contaazul.bankslip.repository.BankslipRepository;
 
 @RunWith(SpringRunner.class)
@@ -56,13 +57,13 @@ public class BankslipServiceImplTest {
 		dueDate = LocalDate.of(2018, 10, 15);
 		payment = Payment.builder().paymentDate(LocalDate.of(2018, 10, 15)).build();
 		bankslipYahoo = Bankslip.builder().id(id).customer("Yahoo")
-				.dueDate(dueDate).totalInCents(new BigDecimal(1000)).build();
+				.dueDate(dueDate).totalInCents(new BigDecimal(1000)).status(Status.PENDING).build();
 		
 		bankslipGoogle = Bankslip.builder().customer("Google")
-				.dueDate(dueDate).totalInCents(new BigDecimal(2000)).build();
+				.dueDate(dueDate).totalInCents(new BigDecimal(2000)).status(Status.PENDING).build();
 		
 		bankslipOracle = Bankslip.builder().customer("Oracle")
-				.dueDate(dueDate).totalInCents(new BigDecimal(3000)).build();
+				.dueDate(dueDate).totalInCents(new BigDecimal(3000)).status(Status.PENDING).build();
 		
 		List<Bankslip> allBankslips = Arrays.asList(bankslipYahoo, bankslipGoogle, bankslipOracle);
 		
