@@ -1,5 +1,9 @@
 ### Desafio Desenvolvedor Backend - ContaAzul ###
 
+Instruções para executar a API desenvolvida: 
+
+Pelo terminal, acesse a pasta onde deseje baixar o projeto e execute o comando: git clone https://github.com/jonatasrd/desafio-backend-contaazul.git
+
 Para rodar os testes da API (unitários e integração), entre na pasta do projeto pelo terminal e execute: mvn test
 
 Para iniciar a API entre na pasta do projeto pelo terminal e execute: mvn spring-boot:run
