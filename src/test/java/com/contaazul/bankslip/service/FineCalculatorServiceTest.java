@@ -42,30 +42,30 @@ public class FineCalculatorServiceTest {
 	}
 	
 	@Test
-	public void givenANotExpiredBankslip_thenReturnZero() {
-		BigDecimal fine = service.calculate(bankslipYahoo, today);
-		assertThat(fine).isEqualByComparingTo(new BigDecimal(0));
+	public void givenANotExpiredBankslip_thenReturnEmpty() {
+		service.calculateTo(bankslipYahoo, today);
+		assertThat(bankslipYahoo.getFine()).isNull();
 	}
 
 	@Test
 	public void givenAnExpiredBankslipLessThenTenDays_thenReturnCalculatedFine() {
 		expiredDueDate = LocalDate.of(2018, 10, 20);
-		BigDecimal fine = service.calculate(bankslipYahoo, expiredDueDate);
-		assertThat(fine).isEqualByComparingTo(new BigDecimal(25));
+		service.calculateTo(bankslipYahoo, expiredDueDate);
+		assertThat(bankslipYahoo.getFine()).isEqualByComparingTo(new BigDecimal(25));
 	}
 
 	@Test
 	public void givenAnExpiredBankslipEqualTenDays_thenReturnCalculatedFine() {
 		expiredDueDate = LocalDate.of(2018, 10, 25);
-		BigDecimal fine = service.calculate(bankslipYahoo, expiredDueDate);
-		assertThat(fine).isEqualByComparingTo(new BigDecimal(50));
+		service.calculateTo(bankslipYahoo, expiredDueDate);
+		assertThat(bankslipYahoo.getFine()).isEqualByComparingTo(new BigDecimal(50));
 	}
 
 	@Test
 	public void givenAnExpiredBankslipGreaterThenTenDays_thenReturnCalculatedFine() {
 		expiredDueDate = LocalDate.of(2018, 10, 26);
-		BigDecimal fine = service.calculate(bankslipYahoo, expiredDueDate);
-		assertThat(fine).isEqualByComparingTo(new BigDecimal(110));
+		service.calculateTo(bankslipYahoo, expiredDueDate);
+		assertThat(bankslipYahoo.getFine()).isEqualByComparingTo(new BigDecimal(110));
 	}
 
 	private Bankslip getBankslip() {

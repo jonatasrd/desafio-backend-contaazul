@@ -16,21 +16,24 @@ public class FineCalculatorService {
 	private static final BigDecimal FINE_HALF_PERCENT = new BigDecimal("0.005");
 	BigDecimal fine;
 
-	public BigDecimal calculate(Bankslip bankslip, LocalDate today) {
+	public Bankslip calculateTo(Bankslip bankslip, LocalDate today) {
 		BigDecimal totalInCents = bankslip.getTotalInCents();
 		LocalDate dueDate = bankslip.getDueDate();
 
 		long days = getNumberOfDays(dueDate, today);
 
 		if (days == 0)
-			return new BigDecimal(0);
+			return bankslip;
 
 		if (days <= MAX_DAYS) {
 			fine = FINE_HALF_PERCENT;
 		} else {
 			fine = FINE_ONE_PERCENT;
 		}
-		return fine.multiply(totalInCents).multiply(new BigDecimal(days));
+		BigDecimal fineTotal = fine.multiply(totalInCents).multiply(new BigDecimal(days));
+		bankslip.setFine(fineTotal);
+		return bankslip;
+				
 	}
 
 	private long getNumberOfDays(LocalDate dueDate, LocalDate today) {
